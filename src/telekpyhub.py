@@ -13,6 +13,7 @@ import copy
 ##################  VARIABLES  ##################
 
 sg.theme("DarkAmber")
+
 layout = [
 	[
 		sg.Text("TelekPyHub", key="-t-", font="Calibri 25", text_color="white")
@@ -38,11 +39,13 @@ def get_telekpyhub_window():
 							size=(350, 350), metadata=WindowType.TELEK_PY_HUB)
 
 
+
 def reopen_main_window():
 	global window
 	window.close()
 	get_telekpyhub_window()
     	
+
 
 def reopen_scpp_window():
 	global window
@@ -52,7 +55,6 @@ def reopen_scpp_window():
 
 
 ##################  MAIN  ##################
-
 
 
 
@@ -80,5 +82,8 @@ def main():
 	window.close()
 
 
+
 if __name__ == '__main__':
 	main()
+
+
