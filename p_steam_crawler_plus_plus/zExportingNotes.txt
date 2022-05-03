@@ -1,7 +1,0 @@
-Elimle cmd'de exporting yapıyorum:
-
-
-cd C:\Users\oguzh\Desktop\YivlemeVb\Python\Yaptiklarim\_steamCrawlerPlusPlus
-
-pyinstaller steamCrawler.py --onefile --noconsole --paths C:\Users\oguzh\Desktop\YivlemeVb\Python\Yaptiklarim\_steamCrawlerPlusPlus\steamVenv\Lib\site-packages
-

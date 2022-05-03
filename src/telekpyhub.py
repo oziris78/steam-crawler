@@ -1,12 +1,16 @@
 
+
+# my imports
 import scpp
 from my_enums import HandlingResult, WindowType
 
+# imports
 import PySimpleGUI as sg
 import copy
 
 
-########################################################
+
+##################  VARIABLES  ##################
 
 sg.theme("DarkAmber")
 layout = [
@@ -21,14 +25,35 @@ layout = [
 ]
 
 
+window = None
+
+
+
+##################  WINDOW FUNCTIONS  ##################
+
+
 def get_telekpyhub_window():
 	global window
 	window = sg.Window("TelekPyHub", copy.deepcopy(layout), element_justification="center", 
 							size=(350, 350), metadata=WindowType.TELEK_PY_HUB)
 
 
+def reopen_main_window():
+	global window
+	window.close()
+	get_telekpyhub_window()
+    	
 
-########################################################
+def reopen_scpp_window():
+	global window
+	window.close()
+	window = scpp.get_window()
+
+
+
+##################  MAIN  ##################
+
+
 
 
 def main():
@@ -42,17 +67,15 @@ def main():
 		
 		if window.metadata == WindowType.TELEK_PY_HUB:
 			if event == "-SCPP-":
-				window.close()
-				window = scpp.get_window()
+				reopen_scpp_window()
 		
 		if window.metadata == WindowType.SCPP:
 			result = scpp.handle_events(event, values)
+			
 			if result == HandlingResult.GO_BACK:
-				window.close()
-				get_telekpyhub_window()
+				reopen_main_window()
 			elif result == HandlingResult.REFLESH:
-				window.close()
-				window = scpp.get_window()
+				reopen_scpp_window()
 
 	window.close()
 
