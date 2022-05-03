@@ -13,6 +13,6 @@ A tool that has various small tools inside it like my TelekHub project.
 
 ## Images
 
-<img src="_repo_images/img1.png" alt="alt text">
+<img src="_repo_images/img3.png" alt="alt text">
 
 <img src="_repo_images/img2.png" alt="alt text">
