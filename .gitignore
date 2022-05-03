@@ -1,3 +1,5 @@
-# no gitignore needed for now
 
 src/__pycache__/
+build
+dist
+*.spec
