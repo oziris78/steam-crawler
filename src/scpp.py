@@ -1,6 +1,7 @@
 
 
 # my imports
+import telekpyhub
 from my_enums import WindowType, HandlingResult
 
 # imports
@@ -14,11 +15,14 @@ import webbrowser
 from bs4 import BeautifulSoup
 
 # import os with custom path
-import os
-os.chdir(os.path.dirname(__file__))  # make sure that os.getcwd() shows this file's folder
-from pathlib import Path
-os.chdir(str(Path(os.getcwd()).parents[0])) # go back once into the project's main folder
 
+import os
+os.chdir(telekpyhub.EXECUTABLE_PATH)
+
+# import os
+# os.chdir(os.path.dirname(__file__))  # make sure that os.getcwd() shows this file's folder
+# from pathlib import Path
+# os.chdir(str(Path(os.getcwd()).parents[0])) # go back once into the project's main folder
 
 
 ##################  VARIABLES  ##################

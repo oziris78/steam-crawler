@@ -8,6 +8,9 @@ from my_enums import HandlingResult, WindowType
 import PySimpleGUI as sg
 import copy
 
+# import os with custom path
+import os
+EXECUTABLE_PATH = os.getcwd()
 
 
 ##################  VARIABLES  ##################
