@@ -1,1 +1,3 @@
 # no gitignore needed for now
+
+src/__pycache__/
