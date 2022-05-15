@@ -19,28 +19,36 @@ from bs4 import BeautifulSoup
 import os
 os.chdir(telekpyhub.EXECUTABLE_PATH)
 
-# import os
-# os.chdir(os.path.dirname(__file__))  # make sure that os.getcwd() shows this file's folder
-# from pathlib import Path
-# os.chdir(str(Path(os.getcwd()).parents[0])) # go back once into the project's main folder
-
 
 ##################  VARIABLES  ##################
 
 
 sg.theme("DarkAmber")
 layout = [
-    [sg.VPush()],
     [
-		sg.Text('CHECK DISCOUNT', font="Calibri 18", key='-EXECUTE-DISCOUNT-', enable_events=True)
+        sg.VPush()
     ],
     [
-		sg.Text('CHECK FREE GAMES', font="Calibri 18", key='-EXECUTE-FREE-', enable_events=True)
+		sg.Text('CHECK DISCOUNT', font="Calibri 20", key='-EXECUTE-DISCOUNT-', enable_events=True)
     ],
     [
-		sg.Text('GO BACK', font="Calibri 18", key='-BACK-', enable_events=True)
+		sg.Text('CHECK FREE GAMES', font="Calibri 20", key='-EXECUTE-FREE-', enable_events=True)
     ],
-    [sg.VPush()]
+    [
+		sg.Text('-----------------------------------' * 2, text_color="gray")
+    ],
+    [
+		sg.Text('OPEN ALL LINKS', font="Calibri 15", key='-OPEN-ALL-LINKS-', enable_events=True)
+    ],
+    [
+		sg.Text('OPEN RES FOLDER', font="Calibri 15", key='-OPEN-RES-', enable_events=True)
+    ],
+    [
+		sg.Text('GO BACK', font="Calibri 15", key='-BACK-', enable_events=True)
+    ],
+    [
+        sg.VPush()
+    ]
 ]
 
 
@@ -48,7 +56,8 @@ all_links = []
 links_to_open = []
 browser_type = ""
 browser_dir = ""
-waiting_time = float()
+waiting_time = -1.0
+browser_obj = None
 
 is_free_executed = False
 is_discount_executed = False
@@ -65,18 +74,26 @@ url_for_free = 'https://store.steampowered.com/search/?sort_by=Price_ASC&support
 
 # reads steam_links.txt file into the variables
 def get_all_links():
+    global all_links
+    if len(all_links) != 0:
+        return
+    
     with open(os.getcwd() + '/res/scpp_links.json', 'r') as myFile:
         _json = json.load(myFile)
-        global all_links
         all_links = _json["all_links"]
 
 
 
 # reads config.txt file into the variables
 def get_configs():
+    global browser_type, browser_dir, waiting_time
+
+    # if all of them are already set then return
+    if browser_type != "" and browser_dir != "" and waiting_time != -1.0:
+        return
+    
     with open(os.getcwd() + '/res/scpp_config.json', 'r') as myFile:
         _json = json.load(myFile)
-        global browser_type, browser_dir, waiting_time
         browser_type = str(_json["browser_type"])
         browser_dir = str(_json["browser_dir"])
         waiting_time = float(_json["waiting_time"])
@@ -85,7 +102,12 @@ def get_configs():
 
 
 def setup_browser():
+    global browser_obj
+    if browser_obj != None:
+        return
+
     webbrowser.register(browser_type, None, webbrowser.BackgroundBrowser(browser_dir))
+    browser_obj = webbrowser.get(browser_type)
 
 
 
@@ -110,12 +132,10 @@ def get_games_on_sale():
 
 
 def open_links():
-    if len(links_to_open) != 0:
+    if len(links_to_open) > 0:
         for i in links_to_open:
-            webbrowser.get(browser_type).open(i)
+            browser_obj.open(i)
             time.sleep(waiting_time)
-    else:
-        sys.exit(0)
         
         
 
@@ -124,10 +144,16 @@ def open_if_theres_any_free_game():
     spans = [str(a.select('div.search_discount span')) for a in soupForFree.select('div#search_resultsRows a')]
     for span in spans:
         if span.find('100%') != -1:
-            webbrowser.get(browser_type).open(url_for_free)
+            browser_obj.open(url_for_free)
             break
 
 
+def open_all_links():
+    for i in all_links:
+        browser_obj.open(i)
+        time.sleep(waiting_time)
+        
+    
 
 ##################  BUTTON HANDLERS  ##################
 
@@ -181,6 +207,19 @@ def handle_open_discount():
     ]
     
 
+def handle_open_res():
+    os.startfile(str(os.getcwd() + "/res"))
+    sys.exit(0)
+
+
+def handle_open_all_links():
+    get_all_links()
+    get_configs()
+    setup_browser()
+    open_all_links()
+    sys.exit(0)
+    
+
 
 ##################  GUI CODE  ##################
 
@@ -189,6 +228,14 @@ def handle_open_discount():
 def handle_events(event, values):
     if event == "-BACK-":
         return HandlingResult.GO_BACK
+
+    if event == "-OPEN-RES-":
+        handle_open_res()
+        # no return needed, sys.exit(0) will run
+
+    if event == "-OPEN-ALL-LINKS-":
+        handle_open_all_links()
+        # no return needed, sys.exit(0) will run
     
     if event == "-EXECUTE-DISCOUNT-":
         handle_execute_discount()
@@ -197,8 +244,7 @@ def handle_events(event, values):
     if event == "-EXECUTE-FREE-":
         handle_execute_free()
         return HandlingResult.REFLESH
-    
-    # exec olanlar
+
     if event == "-OPEN-FREE-" and not is_free_opened:
         handle_open_free()
         return HandlingResult.REFLESH
@@ -212,7 +258,7 @@ def handle_events(event, values):
 
 
 def get_window():
-    return sg.Window("Steam Crawler++", copy.deepcopy(layout), element_justification="center", size=(500, 150), metadata=WindowType.SCPP)
+    return sg.Window("Steam Crawler++", copy.deepcopy(layout), element_justification="center", size=(500, 250), metadata=WindowType.SCPP)
 
 
 
