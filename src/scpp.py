@@ -15,7 +15,6 @@ import webbrowser
 from bs4 import BeautifulSoup
 
 # import os with custom path
-
 import os
 os.chdir(telekpyhub.EXECUTABLE_PATH)
 
@@ -130,14 +129,18 @@ def get_games_on_sale():
             links_to_open.append(all_links[i])
 
 
-
-def open_links():
+def open_all_steamdb_links():
     if len(links_to_open) > 0:
-        for i in links_to_open:
-            browser_obj.open(i)
+        for link in links_to_open:
+            # link is something like https://store.steampowered.com/app/1621690/Core_Keeper/
+            link = str(link).replace("https://store.steampowered.com/app/", "")
+            link = link[:link.index("/")]
+            link = "https://steamdb.info/app/" + link + "/"
+            # now link is something like https://steamdb.info/app/1621690/
+            browser_obj.open(link)
             time.sleep(waiting_time)
         
-        
+
 
 def open_if_theres_any_free_game():
     soupForFree = BeautifulSoup( requests.get(url_for_free).text, 'html.parser')
@@ -148,11 +151,13 @@ def open_if_theres_any_free_game():
             break
 
 
+
 def open_all_links():
     for i in all_links:
         browser_obj.open(i)
         time.sleep(waiting_time)
         
+
     
 
 ##################  BUTTON HANDLERS  ##################
@@ -199,13 +204,14 @@ def handle_open_discount():
     global is_discount_opened
     is_discount_opened = True
     setup_browser()
-    open_links()
+    open_all_steamdb_links()
     try_to_close_app()
     global layout
     layout[1] = [
         sg.Text("Open Discounts", font="Calibri 16", key='-OPEN-DISCOUNT-',  enable_events=True, text_color="red")
     ]
     
+
 
 def handle_open_res():
     os.startfile(str(os.getcwd() + "/res"))
