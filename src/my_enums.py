@@ -3,7 +3,7 @@ from enum import Enum
 
 
 class WindowType(Enum):
-    TELEK_PY_HUB = 1
+    MAIN_WINDOW = 1
     SCPP = 2
 
     

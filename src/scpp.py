@@ -1,7 +1,7 @@
 
 
 # my imports
-import telekpyhub
+import main_window
 from my_enums import WindowType, HandlingResult
 
 # imports
@@ -16,7 +16,7 @@ from bs4 import BeautifulSoup
 
 # import os with custom path
 import os
-os.chdir(telekpyhub.EXECUTABLE_PATH)
+os.chdir(main_window.EXECUTABLE_PATH)
 
 
 ##################  VARIABLES  ##################
@@ -42,9 +42,9 @@ layout = [
     [
 		sg.Text('OPEN RES FOLDER', font="Calibri 15", key='-OPEN-RES-', enable_events=True)
     ],
-    [
-		sg.Text('GO BACK', font="Calibri 15", key='-BACK-', enable_events=True)
-    ],
+    # [
+	# 	sg.Text('GO BACK', font="Calibri 15", key='-BACK-', enable_events=True)
+    # ],
     [
         sg.VPush()
     ]
@@ -153,8 +153,13 @@ def open_if_theres_any_free_game():
 
 
 def open_all_links():
-    for i in all_links:
-        browser_obj.open(i)
+    for link in all_links:
+        # link is something like https://store.steampowered.com/app/1621690/Core_Keeper/
+        link = str(link).replace("https://store.steampowered.com/app/", "")
+        link = link[:link.index("/")]
+        link = "https://steamdb.info/app/" + link + "/"
+        # now link is something like https://steamdb.info/app/1621690/
+        browser_obj.open(link)
         time.sleep(waiting_time)
         
 
@@ -218,6 +223,7 @@ def handle_open_res():
     sys.exit(0)
 
 
+
 def handle_open_all_links():
     get_all_links()
     get_configs()
@@ -232,8 +238,8 @@ def handle_open_all_links():
 
 
 def handle_events(event, values):
-    if event == "-BACK-":
-        return HandlingResult.GO_BACK
+    # if event == "-BACK-":
+        # return HandlingResult.GO_BACK
 
     if event == "-OPEN-RES-":
         handle_open_res()
@@ -264,7 +270,7 @@ def handle_events(event, values):
 
 
 def get_window():
-    return sg.Window("Steam Crawler++", copy.deepcopy(layout), element_justification="center", size=(500, 250), metadata=WindowType.SCPP)
+    return sg.Window("Steam Crawler", copy.deepcopy(layout), element_justification="center", size=(500, 250), metadata=WindowType.SCPP)
 
 
 

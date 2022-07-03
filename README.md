@@ -1,18 +1,8 @@
-# TelekPyHub
 
-A tool that has various small tools inside it like my TelekHub project.  
+# Steam Crawler
 
-<br>
-
-## Current tool set
-|            Tool Name               |      Description    |
-| :--------------------------------: |  :---------------:  |
-|   SCPP (Steam Crawler Plus Plus)   |  Scrapes Steam for discounts and <br> free games (games with %100 discount) |
+A tool that scrapes Steam for discounts and free games (games with %100 discount).
 
 <br>
-
-## Images
-
-<img src="_repo_images/img3.png" alt="alt text">
 
 <img src="_repo_images/img4.png" alt="alt text">

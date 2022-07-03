@@ -4,4 +4,4 @@ exporting command:
     pyinstaller main.py --onefile --noconsole --paths <used venv>\Lib\site-packages
 
 for me:
-    pyinstaller .\src\telekpyhub.py --onefile --noconsole --paths C:\Users\oguzh\myVenv\Lib\site-packages
+    pyinstaller .\src\main_window.py --onefile --noconsole --paths C:\Users\oguzh\myVenv\Lib\site-packages

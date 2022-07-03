@@ -13,17 +13,19 @@ import os
 EXECUTABLE_PATH = os.getcwd()
 
 
+
 ##################  VARIABLES  ##################
+
 
 sg.theme("DarkAmber")
 
 layout = [
 	[
-		sg.Text("TelekPyHub", key="-t-", font="Calibri 25", text_color="white")
+		sg.Text("Main Window", key="-t-", font="Calibri 25", text_color="white")
 	],
 	[sg.VPush()],
 	[
-		sg.Text('Steam Crawler++', font="Calibri 20", key='-SCPP-', enable_events=True)
+		sg.Text('Steam Crawler', font="Calibri 20", key='-SCPP-', enable_events=True)
 	],
 	[ sg.VPush() ]
 ]
@@ -36,17 +38,17 @@ window = None
 ##################  WINDOW FUNCTIONS  ##################
 
 
-def get_telekpyhub_window():
+def get_main_window():
 	global window
-	window = sg.Window("TelekPyHub", copy.deepcopy(layout), element_justification="center", 
-							size=(350, 350), metadata=WindowType.TELEK_PY_HUB)
+	window = sg.Window("Main Window", copy.deepcopy(layout), element_justification="center", 
+							size=(350, 350), metadata=WindowType.MAIN_WINDOW)
 
 
 
 def reopen_main_window():
 	global window
 	window.close()
-	get_telekpyhub_window()
+	get_main_window()
     	
 
 
@@ -63,14 +65,14 @@ def reopen_scpp_window():
 
 def main():
 	global window
-	get_telekpyhub_window()
+	window = scpp.get_window()
 	while True:
 		event, values = window.read()
 
 		if event == sg.WIN_CLOSED:
 			break
 		
-		if window.metadata == WindowType.TELEK_PY_HUB:
+		if window.metadata == WindowType.MAIN_WINDOW:
 			if event == "-SCPP-":
 				reopen_scpp_window()
 		
