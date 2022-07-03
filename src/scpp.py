@@ -237,6 +237,7 @@ def handle_open_all_links():
 
 
 
+
 def handle_events(event, values):
     # if event == "-BACK-":
         # return HandlingResult.GO_BACK
